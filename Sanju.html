@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be Mine Forever, Devi ji?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush: #FFB6C1;
+      --rose:  #FF6B8A;
+      --deep:  #C2185B;
+      --petal: #FFF0F3;
+    }
+
+    html, body { height: 100%; overflow-y: auto; }
+
+    body {
+      background: var(--petal);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .hearts-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+
+    .heart-float {
+      position: absolute; bottom: -60px; font-size: 1.4rem;
+      animation: floatUp linear infinite; opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1) rotate(-10deg); opacity: 0; }
+      10%  { opacity: 0.7; }
+      80%  { opacity: 0.4; }
+      100% { transform: translateY(-110vh) scale(0.6) rotate(10deg); opacity: 0; }
+    }
+
+    .card {
+      position: relative; z-index: 2;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 2px solid rgba(255,182,193,0.5);
+      border-radius: 36px;
+      padding: 56px 64px 52px;
+      max-width: 580px; width: 92vw;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(233,30,99,0.14), 0 2px 12px rgba(255,107,138,0.10), inset 0 0 0 1px rgba(255,255,255,0.6);
+    }
+
+    .crown { font-size: 2.8rem; display: block; margin-bottom: 12px; animation: pulse 2.2s ease-in-out infinite; }
+
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      color: var(--deep); line-height: 1.25; margin-bottom: 6px;
+      text-shadow: 0 2px 12px rgba(194,24,91,0.18);
+    }
+
+    .subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.92rem; color: var(--rose); margin-bottom: 36px; letter-spacing: 0.03em;
+    }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+    .divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--blush), transparent); }
+    .divider .icon { font-size: 1.2rem; }
+
+    .question {
+      font-family: 'Lora', serif; font-size: clamp(1.35rem, 4.5vw, 1.7rem);
+      font-weight: 600; color: #8b2252; margin-bottom: 40px; line-height: 1.5;
+    }
+
+    .btn-zone { display: flex; align-items: center; justify-content: center; gap: 20px; min-height: 80px; flex-wrap: wrap; }
+
+    .btn {
+      border: none; cursor: pointer; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0.04em;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, var(--rose), var(--deep));
+      color: #fff; box-shadow: 0 6px 24px rgba(233,30,99,0.38);
+      font-size: calc(1.15rem + var(--yes-extra, 0px));
+      padding: calc(16px + var(--yes-pad, 0px)) calc(44px + var(--yes-pad, 0px));
+      transition: font-size 0.5s ease, padding 0.5s ease, box-shadow 0.3s ease, transform 0.18s ease;
+    }
+
+    .btn-yes:hover { transform: scale(1.06); box-shadow: 0 10px 32px rgba(233,30,99,0.5); }
+    .btn-yes:active { transform: scale(0.97); }
+
+    .btn-no {
+      padding: 13px 34px; font-size: 1rem;
+      background: transparent; color: var(--rose);
+      border: 2px solid var(--blush);
+      transition: opacity 0.4s ease, transform 0.18s ease;
+    }
+
+    .btn-no:hover { transform: scale(1.04); background: rgba(255,182,193,0.12); }
+    .btn-no:active { transform: scale(0.96); }
+    .btn-no.hidden { opacity: 0; pointer-events: none; width: 0; padding: 0; overflow: hidden; border: none; }
+
+    .success-msg { display: none; animation: fadeInPop 0.8s cubic-bezier(.175,.885,.32,1.275) both; }
+
+    .success-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 6vw, 3rem);
+      color: var(--deep); text-shadow: 0 2px 14px rgba(194,24,91,0.22); margin-bottom: 24px;
+    }
+
+    .photo-frame {
+      margin: 0 auto;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 4px solid var(--rose);
+      box-shadow: 0 0 0 6px rgba(255,182,193,0.35), 0 8px 32px rgba(233,30,99,0.2);
+      overflow: hidden;
+    }
+
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    @keyframes fadeInPop {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    body.said-yes .card {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(255,107,138,0.25), 0 12px 60px rgba(233,30,99,0.25);
+      transition: box-shadow 0.6s ease, border-color 0.6s ease;
+    }
+
+    @keyframes noBounce {
+      0%   { transform: translateX(0); }
+      25%  { transform: translateX(-8px) rotate(-4deg); }
+      50%  { transform: translateX(6px) rotate(3deg); }
+      75%  { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+    @media (max-width: 480px) { .card { padding: 44px 28px 40px; } h1 { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <div class="card">
+    <span class="crown">🦋</span>
+    <h1>Kiya Aap Hamesha Hamare saath Rahengi, Devi Ji?</h1>
+    <p class="subtitle">I know it's tough , Par Nah nahi kehna bs.</p>
+
+    <div class="divider">
+      <span></span><span class="icon">🤭</span><span></span>
+    </div>
+
+    <p class="question">My heart belongs to your Smile.<br>So… kiya tu meri Banegi ?</p>
+
+    <div class="btn-zone" id="btnZone">
+      <button class="btn btn-yes" id="btnYes" onclick="handleYes()">💕 Yes!</button>
+      <button class="btn btn-no"  id="btnNo"  onclick="handleNo()">No</button>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-text">You said YES! 🐼<br>Dekha Maan gayi na 😚</div>
+      <div class="photo-frame">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/1200px-Grosser_Panda.JPG" alt="Sanjana" />
+      </div>
+    </div>
+  </div>
+
+<script>
+  const emojis = ['🩷','💕','🐣','🌹','💗','💓','🐼','🦋','💝','💐','🕺'];
+  const bg = document.getElementById('heartsBg');
+
+  function spawnHeart() {
+    const el = document.createElement('span');
+    el.className = 'heart-float';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur = 6 + Math.random() * 8;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = (Math.random() * 4) + 's';
+    el.style.fontSize = (0.8 + Math.random() * 1.4) + 'rem';
+    bg.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 4) * 1000);
+  }
+
+  setInterval(spawnHeart, 600);
+  for (let i = 0; i < 10; i++) spawnHeart();
+
+  let noClicks = 0;
+
+  const messages = [
+    "Soch le Ek Baar 🙂",
+    "Are Sahi mein Soch le 😅",
+    "Are Badi Ziddi hain 🥺",
+    "Ab Esa karegi 😭",
+    "Ye le , Ab kiya karegi 🤭"
+];
+
+function handleNo() {
+    noClicks++;
+
+    const btnYes = document.getElementById('btnYes');
+    const btnNo = document.getElementById('btnNo');
+
+    btnYes.style.setProperty('--yes-extra', (noClicks * 6) + 'px');
+    btnYes.style.setProperty('--yes-pad', (noClicks * 8) + 'px');
+
+    if (noClicks >= 5) btnNo.classList.add('hidden');
+
+    btnNo.style.animation = 'none';
+    btnNo.offsetHeight;
+    btnNo.style.animation = 'noBounce 0.4s ease';
+
+    btnYes.style.boxShadow = `0 ${6 + noClicks * 3}px ${24 + noClicks * 8}px rgba(233,30,99,${0.38 + noClicks * 0.08})`;
+
+    // Alert Messages
+    let index = Math.min(noClicks - 1, messages.length - 1);
+    alert(messages[index]);
+}
+  function handleYes() {
+    document.getElementById('btnZone').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.body.classList.add('said-yes');
+    for (let i = 0; i < 30; i++) setTimeout(spawnHeart, i * 80);
+  }
+</script>
+
+</body>
+</html>
